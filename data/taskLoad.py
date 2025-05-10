@@ -1,5 +1,7 @@
 from csv import DictReader
-from ..sets import Task, TaskList, Coin
+from sets.Task import Task, TaskType
+from sets.TaskList import TaskList
+from sets.Coin import Coin
 
 def task_load(csv_path: str) -> TaskList:
     """
@@ -17,14 +19,14 @@ def task_load(csv_path: str) -> TaskList:
         for row in reader:
             task = Task(
                 name=row['name'],
-                type=row['type'],
+                type=TaskType(int(row['type'])),
                 duration=int(row['duration']),
-                required=row['required'].lower() == 'true',
+                required=row['required'].lower() == '1',
                 cost=Coin(
                     mental=int(row['costo mental']),
                     physical=int(row['costo fisico'])
                 ),
-                fixed=row['fixed'].lower() == 'true',
+                fixed=row['fixed'].lower() == '1',
                 start=int(row['start'])
             )
             task_list.append(task)

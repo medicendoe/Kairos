@@ -1,5 +1,7 @@
 from csv import DictReader
-from ..sets import Block, BlockList, Coin
+from sets.Block import Block
+from sets.BlockList import BlockList
+from sets.Coin import Coin
 
 def block_load(csv_path: str) -> BlockList:
     """
@@ -19,7 +21,7 @@ def block_load(csv_path: str) -> BlockList:
                 id=int(row['id']),
                 energy=Coin(
                     mental=int(row['energia mental']),
-                    physical=int(row['energia fisico'])
+                    physical=int(row['energia fisica'])
                 )
             )
             block_list.append(block)

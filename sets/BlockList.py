@@ -1,4 +1,4 @@
-from Block import Block
+from sets.Block import Block
 
 class BlockList:
     def __init__(self, *args):

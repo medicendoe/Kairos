@@ -1,4 +1,4 @@
-from Task import Task
+from sets.Task import Task
 
 class TaskList():
     def __init__(self, *args):
@@ -58,6 +58,7 @@ class TaskList():
     
     def get_params(self):
 
+        name = []
         D = {}
         R = {}
         F = {}
@@ -65,9 +66,10 @@ class TaskList():
 
 
         for task in self._tasks:
+            name.append(task.name)
             D[task.name] = task.D
             R[task.name] = task.R
             F[task.name] = task.F
             I[task.name] = task.I
 
-        return D, R, F, I
+        return name, D, R, F, I

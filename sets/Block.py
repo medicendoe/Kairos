@@ -1,4 +1,4 @@
-from Coin import Coin
+from sets.Coin import Coin
 
 class Block:
     def __init__(self, id: int, energy: Coin):

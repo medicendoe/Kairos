@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from Coin import Coin
+from sets.Coin import Coin
 
 class TaskType(Enum):
     HIGHSTUDY = 0
