@@ -1,4 +1,7 @@
 import argparse
+import os
+import csv
+from datetime import datetime
 from pyomo.environ import ConcreteModel, Var, Objective, Constraint, NonNegativeIntegers, Binary, SolverFactory, Set, Param, NonNegativeReals, maximize
 from itertools import product
 from data.taskLoad import task_load
@@ -22,12 +25,9 @@ def run_model(task_csv, block_csv):
     for (t, b) in product(task_list, block_list):
         S[(t.name, b.id)] = S_Precalculus(t, b)
         
-
-
     # Creating the sets
     model.T = Set(initialize=name)
     model.B = Set(initialize=ids)
-
 
     # Creating the parameters
     model.D = Param(model.T, initialize=D, within=NonNegativeIntegers)  # Task durations
@@ -48,16 +48,43 @@ def run_model(task_csv, block_csv):
     # Creating the objective function
     model.obj = Objective(rule=objective, sense=maximize)  # Maximize suitability
 
-    solver = SolverFactory('glpk')  # Replace 'glpk' with your preferred solver
-    result = solver.solve(model)
+    # Ensure out directory exists
+    os.makedirs('out', exist_ok=True)
+
+    # Generate timestamp for filenames
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    lp_filename = f"out/model_{timestamp}.lp"
+    results_filename = f"out/results_{timestamp}.csv"
+
+    model.write(lp_filename, io_options={'symbolic_solver_labels': True})
+
+    solver = SolverFactory('glpk')
+    result = solver.solve(model, tee=True)
+    result.write()
 
     # Output results
     if result.solver.status == 'ok' and result.solver.termination_condition == 'optimal':
         print("Optimal solution found!")
-        for t in model.T:
-            for b in model.B:
-                if model.x[t, b].value == 1:
-                    print(f"Task {t} assigned to Block {b}")
+        
+        # Write results to CSV file
+        with open(results_filename, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Task', 'Block', 'Duration', 'Suitability'])
+            
+            # Store assignments for sorting
+            assignments = []
+            for t in model.T:
+                for b in model.B:
+                    if model.x[t, b].value == 1:
+                        assignments.append((t, b, model.D[t], model.S[t, b]))
+                        print(f"Task {t} assigned to Block {b}")
+            
+            # Sort by block/time and write to CSV
+            for t, b, duration, suitability in sorted(assignments, key=lambda x: x[1]):
+                writer.writerow([t, b, duration, suitability])
+        
+        print(f"Results exported to {results_filename}")
+        print(f"LP model exported to {lp_filename}")
     else:
         print("No optimal solution found.")
 
