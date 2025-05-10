@@ -2,7 +2,7 @@ from Block import Block
 
 class BlockList:
     def __init__(self, *args):
-        self._blocks = []
+        self._blocks: list[Block] = []
         self._ids = set()
         for item in args:
             self.append(item)

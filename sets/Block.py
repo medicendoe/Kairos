@@ -6,7 +6,7 @@ class Block:
             raise TypeError("El atributo 'energy' debe ser un objeto de la clase Coin")
         if not isinstance(id, int) or id < 0:
             raise ValueError("El atributo 'id' debe ser un entero positivo (incluyendo 0)")
-        self.energy = energy
+        self.E_M_F = energy
         self.id = id
 
     def __lt__(self, other):
@@ -20,4 +20,4 @@ class Block:
         return NotImplemented
         
     def __str__(self):
-        return f"Block(energy={self.energy}, id={self.id})"
+        return f"Block(energy={self.E_M_F}, id={self.id})"

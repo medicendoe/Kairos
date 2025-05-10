@@ -2,7 +2,7 @@ from Task import Task
 
 class TaskList():
     def __init__(self, *args):
-        self._tasks = []
+        self._tasks: list[Task] = []
         for item in args:
             self._validate_and_append(item)
 
@@ -58,11 +58,16 @@ class TaskList():
     
     def get_params(self):
 
-        duration_params = {}
-        required_params = {}
+        D = {}
+        R = {}
+        F = {}
+        I = {}
+
 
         for task in self._tasks:
-            duration_params[task.name] = task.duration
-            required_params[task.name] = task.required
+            D[task.name] = task.D
+            R[task.name] = task.R
+            F[task.name] = task.F
+            I[task.name] = task.I
 
-        return duration_params, required_params
+        return D, R, F, I

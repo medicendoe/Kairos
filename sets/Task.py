@@ -11,7 +11,7 @@ class TaskType(Enum):
     PERSONAL = auto()
 
 class Task:
-    def __init__(self, name: str,type: TaskType, duration: int, required: bool, cost: Coin):
+    def __init__(self, name: str,type: TaskType, duration: int, required: bool, cost: Coin, fixed: bool = False, start: int = -1):
         if not isinstance(name, str):
             raise ValueError("El atributo 'name' debe ser un string")
         if not isinstance(type, TaskType):
@@ -22,12 +22,18 @@ class Task:
             raise ValueError("El atributo 'required' debe ser un booleano")
         if not isinstance(cost, Coin):
             raise ValueError("El atributo 'cost' debe ser una instancia de Coin")
+        if not isinstance(fixed, bool):
+            raise ValueError("El atributo 'fixed' debe ser un booleano")
+        if not isinstance(fixed, int):
+            raise ValueError("El atributo 'fixed' debe ser un entero")
 
         self.name = name
-        self.type = type
-        self.duration = duration
-        self.required = required
-        self.cost = cost
+        self.T = type
+        self.D = duration
+        self.R = required
+        self.D_M_F = cost
+        self.F = fixed
+        self.I = start
 
     def __str__(self):
-        return f"Task(type={self.type.value}, duration={self.duration}, required={self.required}, cost={self.cost})"
+        return f"Task(type={self.T.value}, duration={self.D}, required={self.R}, cost={self.D_M_F})"

@@ -5,7 +5,7 @@ class Coin:
         if not isinstance(physical, int) or not 1 <= physical <= 5:
             raise ValueError("El atributo 'physical' debe ser un entero entre 1 y 5")
 
-        self.mental = mental
-        self.physical = physical
+        self.M = mental
+        self.F = physical
         
-    def __str__(self): return f"Coin(mental={self.mental}, physical={self.physical})"
+    def __str__(self): return f"Coin(mental={self.M}, physical={self.F})"
