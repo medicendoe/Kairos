@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  horario-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./in:/app/in  # Montar la carpeta local 'in' en '/app/in' dentro del contenedor
+      - ./out:/app/out  # Montar la carpeta local 'out' en '/app/out' dentro del contenedor
+    stdin_open: true
+    tty: true
